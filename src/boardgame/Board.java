@@ -5,28 +5,61 @@ public class Board {
 	private int rows;
 	private int columns;
 	private Piece[][] pieces;
+
 	public Board(int rows, int columns) {
+		if (rows < 1 || columns < 1) {
+			throw new BoardException("Error cheating board : There must be at least 1 row and 1 column. ");
+		}
 		this.rows = rows;
 		this.columns = columns;
 		pieces = new Piece[rows][columns];
 	}
+
 	public int getRows() {
 		return rows;
 	}
-	public void setRows(int rows) {
-		this.rows = rows;
-	}
+
 	public int getColumns() {
 		return columns;
 	}
-	public void setColumns(int columns) {
-		this.columns = columns;
-	}
+
 	public Piece piece(int row, int column) {
+		if (!positionExists(row, column)) {
+			throw new BoardException("Position not on the board");
+		}
 		return pieces[row][column];
 	}
-	//Fazendo sobrecarga do metodo
+
+// Fazendo sobrecarga do metodo
 	public Piece piece(Position position) {
 		return pieces[position.getRow()][position.getColumn()];
+	}
+
+// Pega a matriz pieces na posicao dada e atribuir a ela a peça informada
+	public void placePiece(Piece piece, Position position) {
+		if (thereIsAPiece(position)) {
+			throw new BoardException("There is aready a piece on position" + position);
+		}
+		pieces[position.getRow()][position.getColumn()] = piece;
+		piece.position = position;
+	}
+
+//Verifica se a posicao existe no tabuleiro
+	public boolean positionExists(int row, int column) {
+		return row >= 0 && row < rows && column >= 0 && column < columns;
+	}
+
+//Verifica a posicao no tabuleiro
+	public boolean positionExists(Position position) {
+		return positionExists(position.getRow(), position.getColumn());
+
+	}
+
+//Metodo que verifica se possui uma peça na posição
+	public boolean thereIsAPiece(Position position) {
+		if (!positionExists(position)) {
+			throw new BoardException("Position not on the board.");
+		}
+		return piece(position) != null;
 	}
 }
