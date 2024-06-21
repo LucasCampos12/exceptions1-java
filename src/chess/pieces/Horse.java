@@ -23,6 +23,7 @@ public class Horse extends ChessPiece {
 		return p == null || p.getColor() != getColor();
 	}
 
+	//possiveis movimentos do cavalo
 	@Override
 	public boolean[][] possibleMoves() {
 		boolean[][] mat = new boolean[getBoard().getRows()][getBoard().getColumns()];
